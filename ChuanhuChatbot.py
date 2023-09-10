@@ -439,8 +439,6 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
         show_progress=False
     )
 
-    two_column.change(update_doc_config, [two_column], None)
-
     # LLM Models
     keyTxt.change(set_key, [current_model, keyTxt], [user_api_key, status_display], api_name="set_key").then(**get_usage_args)
     keyTxt.submit(**get_usage_args)
