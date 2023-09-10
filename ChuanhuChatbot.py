@@ -405,7 +405,6 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
             chatbot,
             use_streaming_checkbox,
             use_websearch_checkbox,
-            index_files,
             language_select_dropdown,
         ],
         [chatbot, status_display],
