@@ -57,7 +57,7 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
     with gr.Row(equal_height=True):
         with gr.Column(scale=5):
             with gr.Row():
-                chatbot = gr.Chatbot(label="Chuanhu Chat", elem_id="chuanhu-chatbot", latex_delimiters=latex_delimiters_set, height=700, avatar_images=[config.user_avatar, config.bot_avatar])
+                chatbot = gr.Chatbot(label="ReonGPT", elem_id="chuanhu-chatbot", latex_delimiters=latex_delimiters_set, height=700, avatar_images=[config.user_avatar, config.bot_avatar])
             with gr.Row():
                 with gr.Column(min_width=225, scale=12):
                     user_input = gr.Textbox(
@@ -113,14 +113,9 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
                         label=i18n("选择回复语言（针对搜索&索引功能）"),
                         choices=REPLY_LANGUAGES,
                         multiselect=False,
-                        value=REPLY_LANGUAGES[0],
+                        value=REPLY_LANGUAGES[2],
                     )
-                    index_files = gr.Files(label=i18n("上传"), type="file", elem_id="upload-index-file")
-                    two_column = gr.Checkbox(label=i18n("双栏pdf"), value=advance_docs["pdf"].get("two_column", False))
-                    summarize_btn = gr.Button(i18n("总结"))
-                    # TODO: 公式ocr
-                    # formula_ocr = gr.Checkbox(label=i18n("识别公式"), value=advance_docs["pdf"].get("formula_ocr", False))
-
+                    
                 with gr.Tab(label="Prompt"):
                     systemPromptTxt = gr.Textbox(
                         show_label=True,
@@ -346,7 +341,6 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
             chatbot,
             use_streaming_checkbox,
             use_websearch_checkbox,
-            index_files,
             language_select_dropdown,
         ],
         outputs=[chatbot, status_display],
@@ -395,9 +389,6 @@ with gr.Blocks(theme=small_and_beautiful_theme) as demo:
 
     submitBtn.click(**transfer_input_args).then(**chatgpt_predict_args, api_name="predict").then(**end_outputing_args)
     submitBtn.click(**get_usage_args)
-
-    index_files.change(handle_file_upload, [current_model, index_files, chatbot, language_select_dropdown], [index_files, chatbot, status_display])
-    summarize_btn.click(handle_summarize_index, [current_model, index_files, chatbot, language_select_dropdown], [chatbot, status_display])
 
     emptyBtn.click(
         reset,
